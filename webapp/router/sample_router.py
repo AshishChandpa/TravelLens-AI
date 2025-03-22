@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from webapp.helper.speech_text import text_to_speech, speech_to_text
+from webapp.helper.speech_text import text_to_speech, speech_to_text, process_query_with_openai
 import os
 
 from webapp import app
@@ -25,11 +25,21 @@ def get_sample():
 
 @app.route("/text-to-speech", methods=["POST"])
 def tts():
-    text = request.json.get("text")
+    data = request.json
+    text = data.get("text")
     if not text:
         return jsonify({"error": "No text provided"}), 400
-    result = text_to_speech(text)
-    return jsonify({"message": result})
+
+    # Step 1: Process the query with OpenAI
+    openai_response = process_query_with_openai(text)
+
+    # Step 2: Speak the OpenAI response using Azure TTS
+    tts_result = text_to_speech(openai_response)
+
+    return jsonify({
+        "message": tts_result,
+        "openai_response": openai_response
+    })
 
 # Speech-to-Text endpoint
 @app.route("/speech-to-text", methods=["POST"])
