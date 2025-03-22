@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Guide - Speech Features</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
-    <h1>Autonomous Virtual Travel Guide</h1>
-    
-    <!-- Text-to-Speech Section -->
-    <h2>Text-to-Speech</h2>
-    <textarea id="tts-text" placeholder="Enter text to convert to speech"></textarea>
-    <button onclick="convertTextToSpeech()">Convert to Speech</button>
-    <p id="tts-result"></p>
+    <div class="container">
+        <h1>Autonomous Virtual Travel Guide</h1>
 
-    <!-- Speech-to-Text Section -->
-    <h2>Speech-to-Text</h2>
-    <input type="file" id="stt-file" accept=".wav">
-    <button onclick="convertSpeechToText()">Convert to Text</button>
-    <p id="stt-result"></p>
+        <!-- Text-to-Speech Section -->
+        <div class="feature-section">
+            <h2><i class="fas fa-volume-up"></i>Text-to-Speech</h2>
+            <textarea id="tts-text"
+                placeholder="Enter text to convert to speech (e.g., 'Tell me about the historical sites in Rome')"></textarea>
+            <div class="button-container">
+                <button class="button" id="tts-button" onclick="convertTextToSpeech()">
+                    <span class="loader" id="tts-loader"></span>
+                    <i class="fas fa-play"></i>Convert to Speech
+                </button>
+            </div>
+            <div class="status-indicator" id="tts-status"></div>
+            <div class="result" id="tts-result"></div>
+        </div>
 
-    <script>
-        // Text-to-Speech
-        async function convertTextToSpeech() {
-            const text = document.getElementById("tts-text").value;
-            const response = await fetch("/text-to-speech", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text })
-            });
-            const result = await response.json();
-            document.getElementById("tts-result").innerText = result.message;
-        }
+        <!-- Speech-to-Text Section -->
+        <div class="feature-section">
+            <h2><i class="fas fa-microphone"></i>Speech-to-Text</h2>
+            <div class="file-input-wrapper">
+                <label class="file-input-label" for="stt-file">
+                    <i class="fas fa-file-audio"></i>Choose an audio file (.wav)
+                </label>
+                <input type="file" id="stt-file" accept=".wav">
+            </div>
+            <div id="file-name-display"></div>
+            <div class="button-container">
+                <button class="button" id="stt-button" onclick="convertSpeechToText()" disabled>
+                    <span class="loader" id="stt-loader"></span>
+                    <i class="fas fa-comment-alt"></i>Convert to Text
+                </button>
+            </div>
+            <div class="status-indicator" id="stt-status"></div>
+            <div class="result" id="stt-result"></div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
-        // Speech-to-Text
-        async function convertSpeechToText() {
-            const fileInput = document.getElementById("stt-file");
-            const file = fileInput.files[0];
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const response = await fetch("/speech-to-text", {
-                method: "POST",
-                body: formData
-            });
-            const result = await response.json();
-            document.getElementById("stt-result").innerText = result.text;
-        }
-    </script>
+    </div>
 </body>
+
 </html>
