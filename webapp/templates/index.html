@@ -1,52 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Guide - Speech Features</title>
+    <title>Travel Guide - Voice Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
-    <h1>Autonomous Virtual Travel Guide</h1>
-    
-    <!-- Text-to-Speech Section -->
-    <h2>Text-to-Speech</h2>
-    <textarea id="tts-text" placeholder="Enter text to convert to speech"></textarea>
-    <button onclick="convertTextToSpeech()">Convert to Speech</button>
-    <p id="tts-result"></p>
+    <div class="container">
+        <h1>Autonomous Virtual Travel Guide</h1>
 
-    <!-- Speech-to-Text Section -->
-    <h2>Speech-to-Text</h2>
-    <input type="file" id="stt-file" accept=".wav">
-    <button onclick="convertSpeechToText()">Convert to Text</button>
-    <p id="stt-result"></p>
-
-    <script>
-        // Text-to-Speech
-        async function convertTextToSpeech() {
-            const text = document.getElementById("tts-text").value;
-            const response = await fetch("/text-to-speech", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text })
-            });
-            const result = await response.json();
-            document.getElementById("tts-result").innerText = result.message;
-        }
-
-        // Speech-to-Text
-        async function convertSpeechToText() {
-            const fileInput = document.getElementById("stt-file");
-            const file = fileInput.files[0];
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const response = await fetch("/speech-to-text", {
-                method: "POST",
-                body: formData
-            });
-            const result = await response.json();
-            document.getElementById("stt-result").innerText = result.text;
-        }
-    </script>
+        <!-- Voice Assistant Section -->
+        <div class="feature-section">
+            <h2><i class="fas fa-comment-dots"></i>Voice Assistant</h2>
+            
+            <div class="voice-container">
+                <div class="voice-visualization">
+                    <div class="voice-wave" id="voice-wave">
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="button mic-button" id="mic-button">
+                        <i class="fas fa-microphone" id="mic-icon"></i>
+                        <span id="mic-text">Press to talk</span>
+                    </button>
+                </div>
+                
+                <div class="status-indicator" id="voice-status"></div>
+                
+                <div class="conversation-container">
+                    <div class="conversation-header">Conversation</div>
+                    <div class="conversation" id="conversation-log"></div>
+                </div>
+                
+                <div class="audio-controls" id="audio-controls" style="display: none;">
+                    <div class="audio-progress">
+                        <div class="audio-progress-bar" id="audio-progress-bar"></div>
+                    </div>
+                    <button class="control-button" id="pause-button">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="control-button" id="stop-button">
+                        <i class="fas fa-stop"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
