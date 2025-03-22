@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Guide - Speech Features</title>
+    <title>Travel Guide - Voice Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
@@ -13,44 +13,50 @@
     <div class="container">
         <h1>Autonomous Virtual Travel Guide</h1>
 
-        <!-- Text-to-Speech Section -->
+        <!-- Voice Assistant Section -->
         <div class="feature-section">
-            <h2><i class="fas fa-volume-up"></i>Text-to-Speech</h2>
-            <textarea id="tts-text"
-                placeholder="Enter text to convert to speech (e.g., 'Tell me about the historical sites in Rome')"></textarea>
-            <div class="button-container">
-                <button class="button" id="tts-button" onclick="convertTextToSpeech()">
-                    <span class="loader" id="tts-loader"></span>
-                    <i class="fas fa-play"></i>Convert to Speech
-                </button>
+            <h2><i class="fas fa-comment-dots"></i>Voice Assistant</h2>
+            
+            <div class="voice-container">
+                <div class="voice-visualization">
+                    <div class="voice-wave" id="voice-wave">
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="button mic-button" id="mic-button">
+                        <i class="fas fa-microphone" id="mic-icon"></i>
+                        <span id="mic-text">Press to talk</span>
+                    </button>
+                </div>
+                
+                <div class="status-indicator" id="voice-status"></div>
+                
+                <div class="conversation-container">
+                    <div class="conversation-header">Conversation</div>
+                    <div class="conversation" id="conversation-log"></div>
+                </div>
+                
+                <div class="audio-controls" id="audio-controls" style="display: none;">
+                    <div class="audio-progress">
+                        <div class="audio-progress-bar" id="audio-progress-bar"></div>
+                    </div>
+                    <button class="control-button" id="pause-button">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="control-button" id="stop-button">
+                        <i class="fas fa-stop"></i>
+                    </button>
+                </div>
             </div>
-            <div class="status-indicator" id="tts-status"></div>
-            <div class="result" id="tts-result"></div>
-        </div>
-
-        <!-- Speech-to-Text Section -->
-        <div class="feature-section">
-            <h2><i class="fas fa-microphone"></i>Speech-to-Text</h2>
-            <div class="file-input-wrapper">
-                <label class="file-input-label" for="stt-file">
-                    <i class="fas fa-file-audio"></i>Choose an audio file (.wav)
-                </label>
-                <input type="file" id="stt-file" accept=".wav">
-            </div>
-            <div id="file-name-display"></div>
-            <div class="button-container">
-                <button class="button" id="stt-button" onclick="convertSpeechToText()" disabled>
-                    <span class="loader" id="stt-loader"></span>
-                    <i class="fas fa-comment-alt"></i>Convert to Text
-                </button>
-            </div>
-            <div class="status-indicator" id="stt-status"></div>
-            <div class="result" id="stt-result"></div>
         </div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-
-    </div>
 </body>
 
 </html>
