@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Guide - Speech Features</title>
+</head>
+<body>
+    <h1>Autonomous Virtual Travel Guide</h1>
+    
+    <!-- Text-to-Speech Section -->
+    <h2>Text-to-Speech</h2>
+    <textarea id="tts-text" placeholder="Enter text to convert to speech"></textarea>
+    <button onclick="convertTextToSpeech()">Convert to Speech</button>
+    <p id="tts-result"></p>
+
+    <!-- Speech-to-Text Section -->
+    <h2>Speech-to-Text</h2>
+    <input type="file" id="stt-file" accept=".wav">
+    <button onclick="convertSpeechToText()">Convert to Text</button>
+    <p id="stt-result"></p>
+
+    <script>
+        // Text-to-Speech
+        async function convertTextToSpeech() {
+            const text = document.getElementById("tts-text").value;
+            const response = await fetch("/text-to-speech", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text })
+            });
+            const result = await response.json();
+            document.getElementById("tts-result").innerText = result.message;
+        }
+
+        // Speech-to-Text
+        async function convertSpeechToText() {
+            const fileInput = document.getElementById("stt-file");
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const response = await fetch("/speech-to-text", {
+                method: "POST",
+                body: formData
+            });
+            const result = await response.json();
+            document.getElementById("stt-result").innerText = result.text;
+        }
+    </script>
+</body>
+</html>

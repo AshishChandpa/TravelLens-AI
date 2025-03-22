@@ -1,4 +1,6 @@
-from flask import jsonify
+from flask import Flask, render_template, request, jsonify
+from webapp.helper.speech_text import text_to_speech, speech_to_text
+import os
 
 from webapp import app
 from webapp.helper import process_data
@@ -20,3 +22,22 @@ def get_sample():
             "success": True,
         },
     ), 200
+
+@app.route("/text-to-speech", methods=["POST"])
+def tts():
+    text = request.json.get("text")
+    if not text:
+        return jsonify({"error": "No text provided"}), 400
+    result = text_to_speech(text)
+    return jsonify({"message": result})
+
+# Speech-to-Text endpoint
+@app.route("/speech-to-text", methods=["POST"])
+def stt():
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+    audio_file = request.files["file"]
+    audio_path = os.path.join("static", "uploads", audio_file.filename)
+    audio_file.save(audio_path)
+    result = speech_to_text(audio_path)
+    return jsonify({"text": result})
