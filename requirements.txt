@@ -4,3 +4,4 @@ python-dotenv==1.0.1
 gunicorn==23.0.0
 pytest==7.4.2
 bandit==1.8.2
+azure-cognitiveservices-speech==1.43.0
