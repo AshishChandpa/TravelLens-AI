@@ -115,7 +115,7 @@ async function processUserInput(text) {
         const result = await response.json();
 
         if (response.ok) {
-            const responseText = result.message;
+            const responseText = result.openai_response;
             addMessageToConversation('Guide', responseText, 'assistant-message');
 
             // Convert response to speech
@@ -252,11 +252,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const message_initial = 'Hello! I\'m your virtual travel guide. What would you like to know about?'
     // Add welcome message
     setTimeout(() => {
-
         addMessageToConversation('Guide', message_initial, 'assistant-message');
-
     }, 500);
-    speakText(message_initial);
 });
 
 // Handle visibility change (pause speech when tab is not visible)
